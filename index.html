@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HW1</title>
+</head>
+
+<p id="p1">Problem 1: Die Simulator<br>
+<script>
+
+var rollArray = [1,2,3,4,5,6];
+function roll() {
+  var randomRollArray = [];
+  for (var i = 0; i<10; i++) {
+  	var randomValue  = rollArray[Math.floor(Math.random() * rollArray.length)];
+  	randomRollArray[i] = randomValue;
+
+  }
+	return randomRollArray;
+}
+var roll = roll().join();
+document.getElementById("p1").innerHTML = "Problem 1 (Die Simulator): " + roll
+
+</script>
+</p>
+
+<p id="p2">Problem 2: Weird Dice <br>
+<script>
+
+function diceFactory(values){
+	
+
+	var factoryFunc = function(){
+		var randomValue  = values[Math.floor(Math.random() * values.length)];
+		return randomValue;
+	}
+	return factoryFunc;
+}
+
+function rgb(){
+		return diceFactory(["red","blue","green"]);
+}
+
+var x = rgb();
+var rgbArray = []
+for (var i = 0; i<10; i++) {
+	 rgbArray.push(x());
+
+}
+
+
+document.getElementById("p2").innerHTML= "Problem 2: " + rgbArray
+
+
+</script>
+</p>
+
+<p id="p3">Problem 3: Non-transitive Dice Generator <br>
+<script>
+
+var E0 = [1,1,1,5,5,5];
+var E1 = [0,0,4,4,4,4];
+var E2 = [3,3,3,3,3,3];
+var E3 = [2,2,2,2,6,6];
+var Earray = [E0, E1, E2, E3];
+// Write a
+// new dice-rolling function generator function called nonTransitiveFactory that
+// returns a function that simulates one of these dice. The generator function should
+// take one argument, a number from {0, 1, 2, 3}, that specifies which die to return. 
+
+function nonTransitiveFactory(oneNumber){
+	var choiceArray = [0,1,2,3]	// specify which die to return
+	var rollFunc = function(){
+		var randomVal  = Earray[oneNumber][Math.floor(Math.random() * Earray[oneNumber].length)];
+		return randomVal;
+	}
+	return rollFunc;
+}
+
+
+
+var answer = nonTransitiveFactory(0);
+var threeArray = []
+for (var i=0; i<10; i++){
+	threeArray.push(answer());
+}
+
+document.getElementById("p3").innerHTML = "Problem 3: " + threeArray
+
+</script>
+</p>
+<p id="p4">Problem 4: Rolling many times <br>
+<script>
+/*Write a function called rollNTimes that takes three
+arguments, two dice-rolling functions (i.e. functions returned by your
+nonTransitiveFactory function) and a number n. It should "roll" the two dice n
+times and return the number of times the first function returned a value greater
+than the second function. Run this function 10 times with E0 and E1 with n=100,
+and display the results in the p tag for this problem.*/
+
+var E0 = [1,1,1,5,5,5];
+var E1 = [0,0,4,4,4,4];
+function rollNTimes(die1,die2,n){
+
+	count = 0;
+	for (var a=0; a <n; a++) {
+		var die1result = die1();
+	  var die2result = die2();
+
+		if (die1result > die2result){
+			count = count + 1;
+		}
+	}
+	return count;
+}
+
+var fourArray = []
+for (var i=0; i<10; i++){
+	var answerFour = rollNTimes(nonTransitiveFactory(0),nonTransitiveFactory(1),100);
+	fourArray.push(answerFour);
+}
+
+document.getElementById("p4").innerHTML = "Problem 4: " + fourArray
+
+</script>
+</p>
+<p id ="p5"> 
+<table style="width:50%;">
+  <tr>
+    <th id="th1"></th>
+    <th id="th2"></th> 
+    <th id="th3"></th>
+    <th id="th4"></th> 
+  </tr>
+  <tr>
+    <th id="th5"></th>
+    <th id="th6"></th> 
+    <th id="th7"></th>
+    <th id="th8"></th> 
+  </tr>
+  <tr>
+    <th id="th9"></th>
+    <th id="th10"></th> 
+    <th id="th11"></th>
+    <th id="th12"></th> 
+  </tr>
+    <tr>
+    <th id="th13"></th>
+    <th id="th14"></th> 
+    <th id="th15"></th>
+    <th id="th16"></th>    
+  </tr>
+</table>
+
+<script>
+
+counter = 0; 
+tableArray = ["th1","th2","th3","th4","th5","th6","th7","th8","th9","th10","th11","th12","th13","th14","th15","th16"]
+
+function setCell(){
+	for (var i = 0; i < 4; i++) {
+		for (var j = 0; j <4;j++) {
+			var goodSolution = rollNTimes(nonTransitiveFactory(i),nonTransitiveFactory(j),1000)
+			document.getElementById(tableArray[counter]).innerHTML = goodSolution;
+			counter = counter + 1;
+		}
+	}
+}
+
+
+Row 1: E0 > E1 & E0 > E2 & E0 < E3 --> E2 < E0 < E3 
+Row 2: E0 > E1 & E1 > E2 & E1 < E3 --> E2 < E1 < E0 E3
+Row 3: E2 > E0 & E1 > E2 & E2 > E3 --> E3 < E2 < E0 
+Row 4: E3 > E0 & E3 > E1 & E3 < E2 --> E2 > E3 > E0
+
+var htmlText = "These dice are non-transitive because their comparative strengths against each other do not remain the same for all cases (aka rows 1-4). If dice A > dice B and dice B > dice C, but dice A is not > dice C then they're non-transitive. This means that there will never be one die that always wins. In Row 1, E3 > E0 > E2. In Row 4, E2 > E3 > E0. Within these three die, E3 is > E0. However in Row 3, E0 > E2 > E3. "
+
+document.getElementById("p5").innerHTML = "Problem 5: " + htmlText + setCell();
+
+</script>
+</p>
+
+</html>
