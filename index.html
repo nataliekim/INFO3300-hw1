@@ -167,11 +167,6 @@ function setCell(){
 }
 
 
-Row 1: E0 > E1 & E0 > E2 & E0 < E3 --> E2 < E0 < E3 
-Row 2: E0 > E1 & E1 > E2 & E1 < E3 --> E2 < E1 < E0 E3
-Row 3: E2 > E0 & E1 > E2 & E2 > E3 --> E3 < E2 < E0 
-Row 4: E3 > E0 & E3 > E1 & E3 < E2 --> E2 > E3 > E0
-
 var htmlText = "These dice are non-transitive because their comparative strengths against each other do not remain the same for all cases (aka rows 1-4). If dice A > dice B and dice B > dice C, but dice A is not > dice C then they're non-transitive. This means that there will never be one die that always wins. In Row 1, E3 > E0 > E2. In Row 4, E2 > E3 > E0. Within these three die, E3 is > E0. However in Row 3, E0 > E2 > E3. "
 
 document.getElementById("p5").innerHTML = "Problem 5: " + htmlText + setCell();
